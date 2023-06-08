@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{todoItem.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{todoItem.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/todoItems/add}" th:text="#{todoItem.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${todoItems.empty}" th:text="#{todoItem.list.empty}" />
+            <div th:if="${!todoItems.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{todoItem.id.label}" scope="col" />
+                            <th th:text="#{todoItem.title.label}" scope="col" />
+                            <th th:text="#{todoItem.isDone.label}" scope="col" />
+                            <th th:text="#{todoItem.user.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="todoItem : ${todoItems}">
+                            <td th:text="${todoItem.id}" />
+                            <td th:text="${todoItem.title}" />
+                            <td th:text="${todoItem.isDone}" />
+                            <td th:text="${todoItem.user}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/todoItems/edit/{id}(id=${todoItem.id})}" th:text="#{todoItem.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/todoItems/delete/{id}(id=${todoItem.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{todoItem.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
